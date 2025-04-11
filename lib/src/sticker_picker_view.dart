@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sticker_picker/src/utils/sticker_paths_util.dart';
 
 class StickerCategory {
   final String name;
@@ -37,6 +38,7 @@ class _StickerPickerViewState extends State<StickerPickerView>
       length: widget.categories.length,
       vsync: this,
     );
+
     _pageController = PageController();
   }
 
@@ -74,6 +76,15 @@ class _StickerPickerViewState extends State<StickerPickerView>
               },
               itemCount: widget.categories.length,
               itemBuilder: (context, categoryIndex) {
+                List<String> paths;
+                final stickerCategoryName = widget.categories[categoryIndex].name;
+
+                if (stickerCategoryName == "Любовь") {
+                  paths = StickerPathsUtil.getStickerPaths('assets/love_stickers');
+                } else {
+                  throw ErrorDescription("Wrong category name");
+                }
+                
                 return GridView.builder(
                   // padding: const EdgeInsets.all(8),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -82,11 +93,9 @@ class _StickerPickerViewState extends State<StickerPickerView>
                     crossAxisSpacing: 8,
                     childAspectRatio: 1,
                   ),
-                  itemCount:
-                      widget.categories[categoryIndex].stickerPaths.length,
+                  itemCount: paths.length,
                   itemBuilder: (context, index) {
-                    final stickerPath =
-                        widget.categories[categoryIndex].stickerPaths[index];
+                    final stickerPath = paths[index];
                     return HoverStickerWidget(
                       stickerPath: stickerPath,
                       stickerSize: widget.stickerSize,
