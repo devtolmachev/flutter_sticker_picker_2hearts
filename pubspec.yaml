@@ -1,6 +1,6 @@
 name: flutter_sticker_picker
 description: A Flutter package for picking stickers with default sticker sets
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/yourusername/flutter_sticker_picker
 
 environment:
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path: ^1.0.0
 
 dev_dependencies:
   flutter_test:
