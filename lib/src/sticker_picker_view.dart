@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sticker_picker/src/utils/sticker_paths_util.dart';
+import 'package:flutter_sticker_picker/src/stickers_categories/love_stickers.dart';
 
 class StickerCategory {
   final String name;
@@ -80,7 +80,7 @@ class _StickerPickerViewState extends State<StickerPickerView>
                 final stickerCategoryName = widget.categories[categoryIndex].name;
 
                 if (stickerCategoryName == "Любовь") {
-                  paths = StickerPathsUtil.getStickerPaths('assets/love_stickers');
+                  paths = LoveStickersCategory().stickerPaths;
                 } else {
                   throw ErrorDescription("Wrong category name");
                 }
