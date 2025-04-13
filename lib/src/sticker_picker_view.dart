@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sticker_picker/src/stickers_categories/love_stickers.dart';
 
 class StickerCategory {
   final String name;
-  final List<String> stickerPaths;
+  final List<Image> stickers;
 
-  StickerCategory({required this.name, required this.stickerPaths});
+  StickerCategory({required this.name, required this.stickers});
 }
 
 class StickerPickerView extends StatefulWidget {
   final List<StickerCategory> categories;
-  final Function(String stickerPath) onStickerSelected;
+  final Function(Image stickerPath) onStickerSelected;
   final Color backgroundColor;
   final double stickerSize;
 
@@ -76,14 +75,8 @@ class _StickerPickerViewState extends State<StickerPickerView>
               },
               itemCount: widget.categories.length,
               itemBuilder: (context, categoryIndex) {
-                List<String> paths;
-                final stickerCategoryName = widget.categories[categoryIndex].name;
-
-                if (stickerCategoryName == "Любовь") {
-                  paths = LoveStickersCategory().stickerPaths;
-                } else {
-                  throw ErrorDescription("Wrong category name");
-                }
+                final stickerCategory = widget.categories[categoryIndex];                
+                List<Image> images = stickerCategory.stickers;
                 
                 return GridView.builder(
                   // padding: const EdgeInsets.all(8),
@@ -93,11 +86,11 @@ class _StickerPickerViewState extends State<StickerPickerView>
                     crossAxisSpacing: 8,
                     childAspectRatio: 1,
                   ),
-                  itemCount: paths.length,
+                  itemCount: images.length,
                   itemBuilder: (context, index) {
-                    final stickerPath = paths[index];
+                    final stickerImage = images[index];
                     return HoverStickerWidget(
-                      stickerPath: stickerPath,
+                      stickerImage: stickerImage,
                       stickerSize: widget.stickerSize,
                       onSelectedCallback: widget.onStickerSelected,
                     );
@@ -113,13 +106,13 @@ class _StickerPickerViewState extends State<StickerPickerView>
 }
 
 class HoverStickerWidget extends StatefulWidget {
-  final String stickerPath;
+  final Image stickerImage;
   final double stickerSize;
-  final Function(String stickerPath) onSelectedCallback;
+  final Function(Image stickerImage) onSelectedCallback;
 
   const HoverStickerWidget({
     super.key,
-    required this.stickerPath,
+    required this.stickerImage,
     required this.stickerSize,
     required this.onSelectedCallback,
   });
@@ -151,14 +144,12 @@ class _HoverStickerWidget extends State<HoverStickerWidget> {
                 ? Colors.transparent
                 : const Color.fromARGB(255, 228, 228, 228),
         child: GestureDetector(
-          onTap: () => widget.onSelectedCallback(widget.stickerPath),
+          onTap: () => widget.onSelectedCallback(widget.stickerImage),
           child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-            child: Image.asset(
-              widget.stickerPath,
-              width: widget.stickerSize,
-              height: widget.stickerSize,
-            ),
+            width: widget.stickerSize,
+            height: widget.stickerSize,
+            child: widget.stickerImage,
           ),
         ),
       ),
